@@ -1,13 +1,24 @@
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, ScrollView } from "react-native";
 
 import { Participant } from '../../components/Participant';
 
 import { styles } from "./styles";
 
 export function Home() {
+  
+const MinhasTasks= ['lavar carro', 'limpar casa', 'comprar comida', 'limpar computador',
+                    'limpar armario', 'comprar ovos', 'limpar cama', 'limpar banheiro',
+                    'limpar janela', 'academia', 'jogar futebol', 'treinar jiujitsu',
+];
+
+
   function handleParticipantsAdd() {
     console.log("Adicionar");
+  }
+
+  function handleTaskRemove(name: string) {
+    console.log(`Remover  ${name}`);
   }
 
   return (
@@ -22,6 +33,8 @@ export function Home() {
           placeholder="Nome da tarefa"
           placeholderTextColor={"#fff"}
         />
+
+
         <TouchableOpacity style={styles.button} onPress={handleParticipantsAdd}>
           <Text style={styles.buttonText}>
             +
@@ -29,9 +42,18 @@ export function Home() {
         </TouchableOpacity>
       </View>
 
-      <Participant />
-      <Participant />
-      <Participant />
+<ScrollView>
+    {
+      MinhasTasks.map(task => (
+        
+        <Participant  
+        key={task}
+        name={task}
+        onRemove={() => handleTaskRemove("Listar atividades")}/>
+      ))
+    }
+     
+    </ScrollView>>
 
 
     </View>
