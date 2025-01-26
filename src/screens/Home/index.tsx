@@ -1,24 +1,39 @@
-import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import React, {useState} from 'react';
+import { Text, View, TextInput, TouchableOpacity, FlatList, Alert} from "react-native";
 
 import { Participant } from '../../components/Participant';
 
 import { styles } from "./styles";
 
 export function Home() {
-  
-const MinhasTasks= ['lavar carro', 'limpar casa', 'comprar comida', 'limpar computador',
-                    'limpar armario', 'comprar ovos', 'limpar cama', 'limpar banheiro',
-                    'limpar janela', 'academia', 'jogar futebol', 'treinar jiujitsu',
-];
+
+const [MinhasTasks,setMinhasTasks] = useState(['estudar a noite']);
+
+
+
+
 
 
   function handleParticipantsAdd() {
-    console.log("Adicionar");
+    
+    if(MinhasTasks.includes('lavar carro')) {
+      return alert('tarefa já existe');
+    }
+   setMinhasTasks(prevState => [...prevState,'ir academia']);
   }
-
+  
   function handleTaskRemove(name: string) {
-    console.log(`Remover  ${name}`);
+    Alert.alert ("Remover", `removar a tarefa ${name}?`,[
+      {
+        text: 'Sim',
+        onPress: () => Alert.alert("deletada")
+      },
+      {
+        text: 'Não',
+        style: 'cancel'
+      }
+    ]);
+          console.log(`Remover  ${name}`);
   }
 
   return (
@@ -42,20 +57,19 @@ const MinhasTasks= ['lavar carro', 'limpar casa', 'comprar comida', 'limpar comp
         </TouchableOpacity>
       </View>
 
-<ScrollView>
-    {
-      MinhasTasks.map(task => (
-        
-        <Participant  
-        key={task}
-        name={task}
-        onRemove={() => handleTaskRemove("Listar atividades")}/>
-      ))
-    }
-     
-    </ScrollView>>
 
+<FlatList
+        data={MinhasTasks}
+        keyExtractor={item => item}
+        renderItem={({ item }) => (
+          <Participant  
+          key={item}
+          name={item}
+          onRemove={() => handleTaskRemove(item)}
+          />
+        )}
+        />
 
     </View>
-  );
+  )
 }
